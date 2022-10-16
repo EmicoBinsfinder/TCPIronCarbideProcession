@@ -362,11 +362,12 @@ def get_average_shear_normal_stress_and_average_mu_constant_temperature(Temperat
         Average_Mu = Shear_Stress / Normal_Stress
         Average_Mu_Dictionary.update({'Average Mu {}'.format(P): Average_Mu})
 
+    v
     Average_Shear_Stress_List = list(Average_Shear_Stress_Dictionary.values())
     Average_Mu_List = list(Average_Mu_Dictionary.values())
     Average_Shear_Stress_List = [x / 10000 for x in Average_Shear_Stress_List]
 
-    return Average_Shear_Stress_List, Average_Mu_List, NormalStressMeans
+    return Average_Shear_Stress_List, Average_Mu_List, NormalStressMeansList
 
 def get_average_shear_normal_stress_and_average_mu_constant_pressure(Pressure, Temperatures):
     Friction_Coefficient_Dataframe_Unnamed = pd.read_csv('F:/PhD/TCPDecompositionExperiments/Completed/FeC/400K/{}/'
@@ -507,7 +508,7 @@ def get_MATLABFIT_dissociation_rates(TimestepList, Coefficient, Cutoff=None):
         LnRate = np.log(NanosecondRate)
     return NanosecondRate, LnRate
 
-def plot_variation_in_shear_stress_constanttemp(temperature, pressures):
+def plot_variation_in_shear_stress_constanttemp(temperature, Pressures):
     Friction_Coefficient_Dataframe_Unnamed = pd.read_csv('F:/PhD/TCPDecompositionExperiments/Completed/FeC/{}/1GPa/'
                                 'fc_ave.dump'.format(temperature), sep=' ')
     Friction_Coefficient_Dataframe = Friction_Coefficient_Dataframe_Unnamed.rename(columns={'v_s_bot' : 'Shear Stress 1GPa', 'v_p_bot' : 'Normal Stress 1GPa'})
@@ -515,14 +516,14 @@ def plot_variation_in_shear_stress_constanttemp(temperature, pressures):
     for P in Pressures:
         Dataframe = pd.read_csv('F:/PhD/TCPDecompositionExperiments/Completed/FeC/{}/{}/'
                                 'fc_ave.dump'.format(temperature, P), sep=' ')
-        Big_DataframeP = Dataframe.rename(columns= {'TimeStep': 'Timestep {}'.format(P),
+        Big_DataframeP = Dataframe.rename(columns= {'Timestep': 'Timestep {}'.format(P),
                                                         'v_s_bot': 'Shear Stress {}'.format(P),
                                                         'v_p_bot': 'Normal Stress {}'.format(P)})
 
         Friction_Coefficient_Dataframe = pd.concat([Friction_Coefficient_Dataframe, Big_DataframeP], axis =1)
         Friction_Coefficient_Dataframe = Friction_Coefficient_Dataframe.dropna()
 
-    Timestep = Friction_Coefficient_Dataframe.TimeStep.tolist()
+    Timestep = Friction_Coefficient_Dataframe.Timestep.tolist()
 
     Shear_Stress_1GPa = Friction_Coefficient_Dataframe['Shear Stress 1GPa'].tolist()
     Shear_Stress_2GPa = Friction_Coefficient_Dataframe['Shear Stress 2GPa'].tolist()
